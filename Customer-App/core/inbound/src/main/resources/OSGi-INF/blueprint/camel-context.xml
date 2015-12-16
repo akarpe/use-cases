@@ -28,7 +28,7 @@
         <reference id="referenceId" availability="optional" interface="foo.bar.IBaz"/>
     -->
 
-    <jaxrs:server id="restService" address="/myService">
+    <jaxrs:server id="restService" address="${cxf.url}">
         <jaxrs:serviceBeans>
             <ref component-id="DEIMService" />
         </jaxrs:serviceBeans>
@@ -37,5 +37,29 @@
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/blueprint">
         <routeBuilder ref="routeBuilder" />
     </camelContext>
+
+    <!-- Active MQ component -->
+    <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL"
+                  value="failover:(tcp://127.0.0.1:61616)?maxReconnectDelay=2000" />
+        <property name="userName" value="admin" />
+        <property name="password" value="admin" />
+    </bean>
+
+
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+          init-method="start" destroy-method="stop">
+        <property name="maxConnections" value="1" />
+        <property name="connectionFactory" ref="activemqConnectionFactory" />
+    </bean>
+
+    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+        <property name="connectionFactory" ref="pooledConnectionFactory" />
+        <property name="concurrentConsumers" value="1" />
+    </bean>
+
+    <bean id="mq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="configuration" ref="jmsConfig" />
+    </bean>
 
 </blueprint>

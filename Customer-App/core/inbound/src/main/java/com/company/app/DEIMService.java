@@ -1,8 +1,8 @@
 package com.company.app;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -17,11 +17,14 @@ import com.customer.app.Person;
 public class DEIMService implements DEIM {
 
     //camel context
-    @Context
+    //@Context or getter/setter
     private CamelContext camelContext;
 
     //producer template
+    //@EndpointInject
     private ProducerTemplate producerTemplate;
+
+
 
     @Override
     @POST
@@ -34,9 +37,11 @@ public class DEIMService implements DEIM {
 
         producerTemplate = camelContext.createProducerTemplate();
 
-        String requestMsg = (String) producerTemplate.requestBody("direct:start", "<hello>HELP!</hello>");
+        //camelContext.start();
 
-        return response;
+        String requestMsg = (String) producerTemplate.requestBody("direct:start", person);
+
+        return Response.ok(requestMsg).build();
     }
 
     public CamelContext getCamelContext() {

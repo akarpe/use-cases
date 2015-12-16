@@ -1,6 +1,8 @@
 package com.company.app;
 
 
+import org.apache.camel.Exchange;
+import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.test.blueprint.CamelBlueprintTestSupport;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -33,7 +35,7 @@ public class InboundRouteTest extends CamelBlueprintTestSupport {
         //Return location of camel context
         // "blah," +"blah";
         //CamelTestSupport automatically finds context
-        return "OSGI-INF/blueprint/test-camel-context.xml";
+        return "OSGI-INF/blueprint/camel-context.xml," + "OSGI-INF/blueprint/test-placeholder.xml";
     }
 
 
@@ -46,17 +48,24 @@ public class InboundRouteTest extends CamelBlueprintTestSupport {
 
 
         getMockEndpoint("mock:a").expectedMinimumMessageCount(1);
-        template.sendBody("direct:start", "wowowow");
+        //template.sendBody("direct:start", getSampleMessage("/PatientDemographics.xml"));
+
+        template.requestBodyAndHeader("http://localhost:9191/cxf/myService/deim/add", getSampleMessage("/PatientDemographics.xml"), Exchange.CONTENT_TYPE, "application/xml");
+
 
         assertMockEndpointsSatisfied();
 
+
+        /*
         httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost("http://localhost:8181/cxf/myService/deim/add");
         StringEntity input = new StringEntity(getSampleMessage("PatientDemographics.xml"));
         input.setContentType("application/xml");
         httpPost.setEntity(input);
-        HttpResponse httpResponse = httpClient.execute(httpPost);
 
+
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        */
 
     }
 
@@ -78,6 +87,17 @@ public class InboundRouteTest extends CamelBlueprintTestSupport {
         return sb.toString();
     }
 
+
+    @Override
+    protected RouteBuilder createRouteBuilder() throws Exception {
+        return new RouteBuilder() {
+            @Override
+            public void configure() throws Exception {
+                from("mq:q.empi.deim.in")
+                        .to("mock:a");
+            }
+        };
+    }
 
 
 }

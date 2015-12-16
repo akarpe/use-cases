@@ -28,7 +28,7 @@
         <reference id="referenceId" availability="optional" interface="foo.bar.IBaz"/>
     -->
 
-    <jaxrs:server id="restService" address="/myService">
+    <jaxrs:server id="restService" address="http://localhost:8181/cxf/myService">
         <jaxrs:serviceBeans>
             <ref component-id="DEIMService" />
         </jaxrs:serviceBeans>

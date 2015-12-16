@@ -15,6 +15,14 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>4.1</version>
+			<scope>test</scope>
+		</dependency>
+
         <dependency>
       		<groupId>org.slf4j</groupId>
       		<artifactId>slf4j-api</artifactId>
@@ -54,6 +62,7 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-test-blueprint</artifactId>
+			<version>2.12.0</version>
 		</dependency>
 
 
@@ -79,7 +88,7 @@
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
-			<version>2.0</version>
+			<version>2.0-m10</version>
 		</dependency>
 
 		<!-- generated-source dependency -->
@@ -93,7 +102,10 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
+			<version>4.3.4</version>
 		</dependency>
+
+
 
 	</dependencies>
 

@@ -4,10 +4,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -16,6 +13,7 @@ import com.customer.app.Person;
 /**
  * Created by kying on 12/14/15.
  */
+@Path("/deim/")
 public class DEIMService implements DEIM {
 
     //camel context
@@ -23,7 +21,7 @@ public class DEIMService implements DEIM {
     private CamelContext camelContext;
 
     //producer template
-    private ProducerTemplate producterTemplate;
+    private ProducerTemplate producerTemplate;
 
     @Override
     @POST
@@ -34,9 +32,9 @@ public class DEIMService implements DEIM {
         Response response = null;
         System.out.println("Hello!");
 
-        producterTemplate = camelContext.createProducerTemplate();
+        producerTemplate = camelContext.createProducerTemplate();
 
-        String requestMsg = (String) producterTemplate.requestBody("direct:start", "<hello>HELP!</hello>");
+        String requestMsg = (String) producerTemplate.requestBody("direct:start", "<hello>HELP!</hello>");
 
         return response;
     }
@@ -50,6 +48,9 @@ public class DEIMService implements DEIM {
     }
 
     //test endpoint
+    @GET
+    @Path("/test/")
+    @Produces("text/plain")
     public String test(){
         return "Hiii";
     }

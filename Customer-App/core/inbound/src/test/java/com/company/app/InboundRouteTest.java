@@ -28,7 +28,7 @@ public class InboundRouteTest extends CamelBlueprintTestSupport {
         //Return location of camel context
         // "blah," +"blah";
         //CamelTestSupport automatically finds context
-        return "OSGI-INF/blueprint/camel-context.xml";
+        return "OSGI-INF/blueprint/test-camel-context.xml";
     }
 
 

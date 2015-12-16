@@ -12,11 +12,11 @@ import com.customer.app.Person;
 public interface DEIM {
 
   @POST
+  @Path("/add/")
   Response addCustomer(Person person);
 
   @GET
   @Path("/test/")
-  @Produces("text/plain")
   public String test();
 
 }

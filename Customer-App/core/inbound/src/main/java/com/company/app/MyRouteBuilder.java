@@ -16,19 +16,6 @@ import javax.xml.namespace.QName;
  */
 public class MyRouteBuilder extends RouteBuilder {
 
-    //DataFormat personalDataFormat;
-    //JaxbDataFormat personDataFormat = buildPersonDataFormat();
-
-
-    /*private JaxbDataFormat buildPersonDataFormat() {
-        JaxbDataFormat personDataFormat = new JaxbDataFormat();
-        personDataFormat.setContextPath("com.customer.app");
-        //personDataFormat.setPartClass("com.customer.app.Person");
-        //personDataFormat.setPartNamespace(new QName("http://www.company.com", "Person"));
-        personDataFormat.setPrettyPrint(true);
-        return personDataFormat;
-    }*/
-
 
     @Override
     public void configure() throws Exception {

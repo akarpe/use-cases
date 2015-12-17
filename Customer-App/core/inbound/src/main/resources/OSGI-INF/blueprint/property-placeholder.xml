@@ -7,7 +7,7 @@
 
   <cm:property-placeholder id="config.osgi" persistent-id="com.customer.app.inbound">
     <cm:default-properties>
-       <cm:property name="service.uri.inbound" value="/inbound"/>
+       <cm:property name="service.uri.inbound" value="/inbound"/> <!-- Final URL: http://localhost:8181/cxf/inbound/patient/add -->
        <cm:property name="broker.url" value="failover:(tcp://127.0.0.1:61616)" />
     </cm:default-properties>
   </cm:property-placeholder>

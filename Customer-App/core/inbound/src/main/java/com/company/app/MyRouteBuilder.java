@@ -32,13 +32,23 @@ public class MyRouteBuilder extends RouteBuilder {
         this.getContext().getTypeConverterRegistry().addTypeConverter(ExecuteMatchUpdate.class, Person.class, new MyTypeConverter());
 
         from("direct:start")
-               .log("help help")
-               .unmarshal(personDataFormat)
+               .log("inbound route")
+               .marshal(personDataFormat)
                .to("log:com.company.app?showAll=true&multiline=true")
-               .convertBodyTo(ExecuteMatchUpdate.class)
-               .marshal(nextDataFormat)
+               .convertBodyTo(String.class)
                .inOnly("mq:q.empi.deim.in")
-               .transform(constant("doneeee"));
+               .transform(constant("done - inbound"));
+
+        from("mq:q.empi.deim.in")
+                .log("xlate")
+                .unmarshal(personDataFormat)
+                .to("log:com.company.app?showAll=true&multiline=true")
+                .convertBodyTo(ExecuteMatchUpdate.class)
+                .marshal(nextDataFormat)
+                .inOnly("mq:q.empi.deim.out")
+                .transform(constant("doneeee"));
+
+
     }
 
 

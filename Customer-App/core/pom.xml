@@ -19,9 +19,9 @@
 
   <modules>
     <module>artifacts</module>
-    <module>components</module>
+    <!-- <module>components</module> -->
     <module>processors</module>
-    <module>resources</module>
+    <!-- <module>resources</module> -->
     <module>services</module>
     <module>inbound</module>
     <module>xlate</module>

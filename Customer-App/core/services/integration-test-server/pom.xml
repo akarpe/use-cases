@@ -82,6 +82,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <!-- <Import-Package>
+                            *
+                        </Import-Package> -->
                         <Import-Package>
                             *,
                             META-INF.cxf,

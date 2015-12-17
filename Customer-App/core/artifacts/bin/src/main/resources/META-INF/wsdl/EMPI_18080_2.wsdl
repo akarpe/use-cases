@@ -2215,7 +2215,7 @@
     </binding>
     <service name="PersonEJBService">
         <port name="PersonEJBPort" binding="tns:PersonEJBPortBinding">
-            <soap:address location="http://sea-l3ngsa01.davita.com:18080/PersonEJBService/PersonEJB"
+            <soap:address location="http://www.app.customer.com:18080/PersonEJBService/PersonEJB"
             />
         </port>
     </service>

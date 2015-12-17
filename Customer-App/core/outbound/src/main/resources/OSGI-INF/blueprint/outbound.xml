@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+	xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+	xmlns:cxf="http://camel.apache.org/schema/blueprint/cxf"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 https://osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.0.0.xsd
+       http://camel.apache.org/schema/blueprint/cxf https://camel.apache.org/schema/cxf/camel-cxf-blueprint.xsd
+       ">
+
+	
+    <cxf:cxfEndpoint id="nextgateEndpoint" 
+    	address="http://localhost:8181/cxf/PersonEJBService/PersonEJB"
+    	serviceClass="com.sun.mdm.index.webservice.PersonEJB"
+    	
+    />
+
+	<!-- Active MQ component -->
+	<bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL"
+			value="${broker.url}" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="1" />
+		<property name="connectionFactory" ref="activemqConnectionFactory" />
+	</bean>
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="concurrentConsumers" value="1" />
+	</bean>
+
+	<bean id="mq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+	</bean>
+
+	<!-- Camel context - outbound route -->
+	<bean id="outboundRouteBuilder" class="com.customer.app.outbound.route.OutboundRouteBuilder"/>
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint"
+		id="outboundCamelContext">
+		<routeBuilder ref="outboundRouteBuilder" />
+	</camelContext>
+
+</blueprint>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:executeMatchUpdateResponse
+	xmlns:ns2="http://webservice.index.mdm.sun.com/">
+	<return>
+		<EUID>OK</EUID>
+		<matchFieldChanged>true</matchFieldChanged>
+		<overlayDetected>false</overlayDetected>
+		<resultCode>1</resultCode>
+	</return>
+</ns2:executeMatchUpdateResponse>

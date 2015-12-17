@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+    xmlns:cxf="http://cxf.apache.org/blueprint/core"
+	xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xsi:schemaLocation="
+       http://www.osgi.org/xmlns/blueprint/v1.0.0 https://osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+       http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+       http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.0.0.xsd
+       http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+       http://cxf.apache.org/blueprint/core  http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+       ">
+
+	<!-- Might need it for additional 
+	
+	
+	 -->
+
+
+	<!-- CXF service: /cxf/inbound/patient/ /inbound -->
+	<jaxrs:server id="patientService" address="${service.uri.inbound}">
+		<jaxrs:serviceBeans>
+			<ref component-id="patientBean" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<!-- <ref component-id="jaxbProvider"/> validationHandler, jaxbElementClassMap -->
+		</jaxrs:providers>
+		<jaxrs:features>
+		  	 <cxf:logging/>
+		</jaxrs:features>
+	</jaxrs:server>
+
+
+	<bean id="patientBean" class="com.customer.app.inbound.service.PatientService" >
+		<property name="camelContext" ref="inboundCamelContext" />
+	</bean>
+
+
+	<!-- Active MQ component -->
+	<bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL"
+			value="${broker.url}" />
+		<property name="userName" value="admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+
+	<bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		init-method="start" destroy-method="stop">
+		<property name="maxConnections" value="1" />
+		<property name="connectionFactory" ref="activemqConnectionFactory" />
+	</bean>
+
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="pooledConnectionFactory" />
+		<property name="concurrentConsumers" value="1" />
+	</bean>
+
+	<bean id="mq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+		<property name="configuration" ref="jmsConfig" />
+	</bean>
+
+	<!-- Camel context - inbound route -->
+	<bean id="inboundRouteBuilder" class="com.customer.app.inbound.route.InboundRouteBuilder"/>
+
+	<camelContext xmlns="http://camel.apache.org/schema/blueprint"
+		id="inboundCamelContext">
+		<routeBuilder ref="inboundRouteBuilder" />
+	</camelContext>
+
+</blueprint>

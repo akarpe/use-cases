@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.davita.com" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.davita.com">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.app.customer.com" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.app.customer.com">
     <xs:annotation>
         <xs:documentation>The Person domain contains information about Persons and other living entities. Despite the package name, this package also includes animals, because they might be recipients of care or might be the subject of tests for either research or public health purposes.
 
@@ -537,7 +537,7 @@
     <xs:element name="PatientInformation" type="PatientInformation"/>
     <xs:complexType name="PatientInformation">
         <xs:annotation>
-            <xs:documentation>Patient DaVita Specific information</xs:documentation>
+            <xs:documentation>Patient Specific information</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="ishospice" type="xs:boolean" minOccurs="0" maxOccurs="1">
@@ -545,8 +545,8 @@
                     <xs:documentation>DVA - isHospice</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="anticipateddavitafdod" type="TimeInterval" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="actualdavitafdod" type="TimeInterval" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="anticipatedfdod" type="TimeInterval" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="actualfdod" type="TimeInterval" minOccurs="0" maxOccurs="1"/>
             <xs:element name="hospicestartdate" type="TimeInterval" minOccurs="0" maxOccurs="1"/>
             <xs:element name="homelocationphyfirstname" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="homelocationphylastname" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -581,17 +581,17 @@
             </xs:element>
             <xs:element name="locationid" type="xs:string" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>Patient Home Location ID - DaVita Specific attribute - This can be facility</xs:documentation>
+                    <xs:documentation>Patient Home Location ID - This can be facility</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="facilitynumber" type="xs:string" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>DaVita Facility Number</xs:documentation>
+                    <xs:documentation>Facility Number</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="locationtype" type="Code" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>Location Type - Davita specific - Home, Visiting , Non-DaVita Clinic</xs:documentation>
+                    <xs:documentation>Location Type - Home, Visiting ,Clinic</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="status" type="Code" minOccurs="0" maxOccurs="1">

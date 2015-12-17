@@ -9,6 +9,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import com.customer.app.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by kying on 12/14/15.
@@ -24,6 +26,7 @@ public class DEIMService implements DEIM {
     //@EndpointInject
     private ProducerTemplate producerTemplate;
 
+    Logger logger = LoggerFactory.getLogger(DEIMService.class);
 
 
     @Override

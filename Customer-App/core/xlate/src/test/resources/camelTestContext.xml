@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+               http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+
+
+	<amq:broker brokerName="testBroker12345" start="true" id="broker">
+		<amq:transportConnectors>
+			<amq:transportConnector uri="vm://localhost" />
+		</amq:transportConnectors>
+	</amq:broker>
+
+	<bean id="activeMq" class="org.apache.activemq.camel.component.ActiveMQComponent"
+		depends-on="broker">
+		<property name="brokerURL" value="vm://localhost" />
+	</bean>
+	<bean id="routeBuilder" class="com.redhat.customer.translate.RouteBuilderXlate" />
+
+	<!-- <bean id="serviceStrategy"
+		class="org.apache.camel.dataformat.soap.name.ServiceInterfaceStrategy">
+		<constructor-arg value="cxf.com.sun.mdm.index.webservice.PersonEJB" />
+		<constructor-arg value="true" />
+	</bean> -->
+	<camelContext xmlns="http://camel.apache.org/schema/spring"
+		trace="false" typeConverterStatisticsEnabled="true">
+		<!-- <camel:dataFormats>
+			<camel:soapjaxb contextPath="com.sun.mdm.index.webservice"
+				id="soapJax" elementNameStrategyRef="serviceStrategy" />
+			<camel:jaxb id="personMarshaller" contextPath="com.customer.app"
+				partClass="com.customer.app.Person" />
+		</camel:dataFormats>
+		<route id="translate">
+			<camel:from uri="activeMq:queue:customer"></camel:from>
+			<camel:unmarshal ref="personMarshaller"></camel:unmarshal>
+
+			<camel:convertBodyTo
+				type="com.sun.mdm.index.webservice.ExecuteMatchUpdate"></camel:convertBodyTo>
+			<camel:log message="${body}" />
+			<camel:marshal ref="soapJax"></camel:marshal>
+			<camel:to uri="activeMq:queue:outbound" />
+			
+		</route> -->
+		<camel:routeBuilder ref="routeBuilder" />
+	</camelContext>
+
+</beans>
